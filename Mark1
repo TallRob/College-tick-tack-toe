@@ -1,0 +1,141 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Unit_18
+{
+    class Program
+    {
+        static string[,] grid = new string[3,3];
+        static Random random = new Random();
+        static void Main(string[] args)
+        {
+            string player = "X";
+            resetBoard();
+
+            while (checkWin() == false)
+            {
+                drawBoard();
+                if (player == "X")
+                {
+                    playerMove(player);
+                    player = "0";
+                }
+                else
+                {
+                    playerMove(player);
+                    player = "X";
+                }
+                Console.Clear();
+            }
+        }
+        static void computerMove(string player)
+        {
+            string move = "";
+            while (true)
+            {
+                move = Convert.ToString(random.Next(1, 9));
+                for (int i = 0; i < 3; i++)
+                    for (int j = 0; j < 3; j++)
+                    {
+                        if (move == grid[i, j])
+                        {
+                            grid[i, j] = player;
+                            return;
+                        }
+                    }
+            }
+        }
+        static void playerMove(string player)
+        {
+
+            string move = "";
+            while (true)
+            {
+                Console.WriteLine("Choose a number:");
+                move = Console.ReadLine();
+                for (int i = 0; i < 3; i++)
+                    for (int j = 0; j < 3; j++)
+                    {
+                        if (move == grid[i, j])
+                        {
+                            grid[i, j] = player;
+                            return;
+                        }
+                    }
+            }
+        }
+        static void resetBoard()
+        {
+            int count = 1;
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
+                {
+                    grid[i, j] = Convert.ToString(count);
+                    count++;
+                }
+        }
+        static void drawBoard()
+        {
+            //row is i, collumn is j
+
+            for (int i = 0; i < 3; i++)
+            {
+                Console.WriteLine("╬══════╬══════╬═════╬");
+                for (int j = 0; j < 3; j++)
+                {
+                    Console.Write("║  "+ grid[i, j]+ "   ");
+                }
+                Console.WriteLine("║");
+                Console.WriteLine("╬══════╬══════╬═════╬");
+            }
+
+
+            /*Console.WriteLine("╔══════╦══════╦══════╗");
+            Console.WriteLine("║      ║      ║      ║");
+            Console.WriteLine("║  1   ║  2   ║  3   ║");
+            Console.WriteLine("║      ║      ║      ║");
+            Console.WriteLine("╠══════╬══════╬══════╣");
+            Console.WriteLine("║      ║      ║      ║");
+            Console.WriteLine("║  4   ║  5   ║  6   ║");
+            Console.WriteLine("║      ║      ║      ║");
+            Console.WriteLine("╠══════╬══════╬══════╣");
+            Console.WriteLine("║      ║      ║      ║");
+            Console.WriteLine("║  7   ║  8   ║  9   ║");
+            Console.WriteLine("║      ║      ║      ║");
+            Console.WriteLine("╚══════╩══════╩══════╝");*/
+
+            //Console.WriteLine("╔══════╦══════╦══════╗\n║      ║      ║      ║\n║      ║      ║      ║\n║      ║      ║      ║\n╠══════╬══════╬══════╣\n║      ║      ║      ║\n║      ║      ║      ║\n║      ║      ║      ║\n╠══════╬══════╬══════╣\n║      ║      ║      ║\n║      ║      ║      ║\n║      ║      ║      ║\n╚══════╩══════╩══════╝");
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    for (int j = 0; j < 3; j++)
+            //        Console.Write(grid[i, j]);
+            //    Console.WriteLine();
+            //}
+
+        }
+        static Boolean checkWin()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if ((grid[i, 0] == grid[i, 1]) && (grid[i, 0] == grid[i, 2]))
+                {
+                    Console.WriteLine(grid[i, 0] + " Wins!");
+                    return true;
+                }
+                if ((grid[0, i] == grid[1, i]) && (grid[0, i] == grid[2, i]))
+                {
+                    Console.WriteLine(grid[0, i] + " Wins!");
+                }
+            }
+            if (((grid[0, 0] == grid[1, 1]) && (grid[2, 2] == grid[0, 0])) || ((grid[0, 2] == grid[1, 1]) && (grid[0, 2] == grid[2, 0])))
+            {
+                Console.WriteLine(grid[1, 1] + " Wins!");
+                return true;
+            }
+            return false;
+
+        }
+    }
+}
