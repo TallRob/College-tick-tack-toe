@@ -16,19 +16,23 @@ namespace Unit_18
 
             while (checkWin() == false)
             {
+                //Console.WriteLine("   This is a game of Tick-Tack-Toe. You're playing against an unintellible \n   computer designed to frustrate you. \n   Press any key to continue");
+                //Console.ReadLine();
+                Console.Clear();
                 drawBoard();
                 if (player == "X")
                 {
                     playerMove(player);
-                    player = "0";
+                    player = "O";
                 }
                 else
                 {
                     playerMove(player);
                     player = "X";
                 }
-                Console.Clear();
+                //Console.Clear();
             }
+            Console.ReadLine();
         }
         static void computerMove(string player)
         {
@@ -38,13 +42,8 @@ namespace Unit_18
                 move = Convert.ToString(random.Next(1, 9));
                 for (int i = 0; i < 3; i++)
                     for (int j = 0; j < 3; j++)
-                    {
                         if (move == grid[i, j])
-                        {
-                            grid[i, j] = player;
-                            return;
-                        }
-                    }
+                            grid[i, j] = player; return;
             }
         }
         static void playerMove(string player)
@@ -67,6 +66,7 @@ namespace Unit_18
             }
         }
         static void resetBoard()
+            
         {
             int count = 1;
             for (int i = 0; i < 3; i++)
@@ -79,52 +79,28 @@ namespace Unit_18
         static void drawBoard()
         {
             //row is i, collumn is j
-
-            for (int i = 0; i < 3; i++)
+            Console.WriteLine("╔═══╦═══╦═══╗"); //top row
+            for (int i = 0; i < 3; i++) //declare row with integer value 0, 
             {
-                Console.WriteLine("╬══════╬══════╬═════╬");
                 for (int j = 0; j < 3; j++)
                 {
-                    Console.Write("║  "+ grid[i, j]+ "   ");
+                    Console.Write("║ "+ grid[i, j]+ " ");
+                    if (j == 2) Console.WriteLine("║");
                 }
-                Console.WriteLine("║");
-                Console.WriteLine("╬══════╬══════╬═════╬");
+                if (i < 2) Console.WriteLine("╠═══╬═══╬═══╣");
             }
-
-
-            /*Console.WriteLine("╔══════╦══════╦══════╗");
-            Console.WriteLine("║      ║      ║      ║");
-            Console.WriteLine("║  1   ║  2   ║  3   ║");
-            Console.WriteLine("║      ║      ║      ║");
-            Console.WriteLine("╠══════╬══════╬══════╣");
-            Console.WriteLine("║      ║      ║      ║");
-            Console.WriteLine("║  4   ║  5   ║  6   ║");
-            Console.WriteLine("║      ║      ║      ║");
-            Console.WriteLine("╠══════╬══════╬══════╣");
-            Console.WriteLine("║      ║      ║      ║");
-            Console.WriteLine("║  7   ║  8   ║  9   ║");
-            Console.WriteLine("║      ║      ║      ║");
-            Console.WriteLine("╚══════╩══════╩══════╝");*/
-
-            //Console.WriteLine("╔══════╦══════╦══════╗\n║      ║      ║      ║\n║      ║      ║      ║\n║      ║      ║      ║\n╠══════╬══════╬══════╣\n║      ║      ║      ║\n║      ║      ║      ║\n║      ║      ║      ║\n╠══════╬══════╬══════╣\n║      ║      ║      ║\n║      ║      ║      ║\n║      ║      ║      ║\n╚══════╩══════╩══════╝");
-            //for (int i = 0; i < 3; i++)
-            //{
-            //    for (int j = 0; j < 3; j++)
-            //        Console.Write(grid[i, j]);
-            //    Console.WriteLine();
-            //}
-
+            Console.WriteLine("╚═══╩═══╩═══╝");
         }
         static Boolean checkWin()
         {
-            for (int i = 0; i < 3; i++)
+            for(int i = 0; i < 3; i++)
             {
-                if ((grid[i, 0] == grid[i, 1]) && (grid[i, 0] == grid[i, 2]))
+                if ((grid[i, 0] == grid[i, 1]) && (grid[i, 0] ==grid[i, 2]))
                 {
                     Console.WriteLine(grid[i, 0] + " Wins!");
                     return true;
                 }
-                if ((grid[0, i] == grid[1, i]) && (grid[0, i] == grid[2, i]))
+                if ((grid[0, i] == grid[1, i]) && (grid[0, i] ==grid[2, i]))
                 {
                     Console.WriteLine(grid[0, i] + " Wins!");
                 }
@@ -134,6 +110,7 @@ namespace Unit_18
                 Console.WriteLine(grid[1, 1] + " Wins!");
                 return true;
             }
+            drawBoard();
             return false;
 
         }
