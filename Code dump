@@ -1,0 +1,506 @@
+        static void playerVsComputerHard()
+        {
+            Console.Clear();
+            Console.WriteLine("\n   This is a game of Tick-Tack-Toe. You're playing against an\n   intelligent computer designed to frustrate you. \n\n   Press Enter begin the slaughter");
+            Console.ReadKey();
+            while (xWins < 5 && oWins < 5)
+            {
+                while (winner == false && moveCount < 9)
+                {
+                    drawBoard();
+                    if (player == "X")
+                    {
+                        playerMove(player);
+                        player = "O";
+                    }
+                    else
+                    {
+                        computerMoveHard(player);
+                        player = "X";
+                    }
+                    moveCount++;
+                    winner = checkWin();
+                }
+                if (winner == false)
+                {
+                    drawBoard();
+                    Console.WriteLine("Game is a Draw!");
+                }
+                else
+                {
+                    if (player == "O")
+                        xWins = xWins + 1;
+                    else
+                        oWins = oWins + 1;
+                }
+                if (xWins < 5 && oWins < 5)
+                {
+                    Console.WriteLine("\nX wins = " + xWins + "\nO wins = " + oWins + "\n\nPress Enter to proceed to the next battle.");
+                    Console.ReadLine();
+                }
+                else
+                {
+                    Console.WriteLine("\nX wins = " + xWins + "\nO wins = " + oWins);
+                }
+                winner = false;
+                moveCount = 0;
+                resetBoard();
+            }
+
+            if (xWins == 5)
+            {
+                Console.WriteLine("\nThe computer has been defeated. X is the winner\nGame Over!");
+            }
+            else
+            {
+                Console.WriteLine("\nX has been defeated. The computer is the winner\nGame Over!");
+            }
+            Console.ReadLine();
+        }
+        static void computerMoveHard(string player)
+        {
+            bool checkForCounterBlock = true;
+            bool finishingMove = true;
+            bool midPlay = true;
+            while (true)
+            {
+                //Blocking moves horizontal
+                if (checkForCounterBlock == true)
+                {
+                    #region blockMoves
+                    if (grid[0, 0] == "X" && grid[0, 1] == "X" && grid[0, 2] == "3")
+                    {
+                        //block at 3
+                        grid[0, 2] = player;
+                        return;
+                    }
+                    else if (grid[0, 0] == "X" && grid[0, 1] == "2" && grid[0, 2] == "X")
+                    {
+                        //block at 2
+                        grid[0, 1] = player;
+                        return;
+                    }
+                    else if (grid[0, 0] == "1" && grid[0, 1] == "X" && grid[0, 2] == "X")
+                    {
+                        //block at 1
+                        grid[0, 0] = player;
+                        return;
+                    }
+                    else if (grid[1, 0] == "X" && grid[1, 1] == "X" && grid[1, 2] == "6")
+                    {
+                        //block at 6
+                        grid[1, 2] = player;
+                        return;
+                    }
+                    else if (grid[1, 0] == "X" && grid[1, 1] == "5" && grid[1, 2] == "X")
+                    {
+                        //block at 5
+                        grid[1, 1] = player;
+                        return;
+                    }
+                    else if (grid[1, 0] == "4" && grid[1, 1] == "X" && grid[1, 2] == "X")
+                    {
+                        //block at 4
+                        grid[1, 0] = player;
+                        return;
+                    }
+                    else if (grid[2, 0] == "X" && grid[2, 1] == "X" && grid[2, 2] == "9")
+                    {
+                        //block at 9
+                        grid[2, 2] = player;
+                        return;
+                    }
+                    else if (grid[2, 0] == "X" && grid[2, 1] == "8" && grid[2, 2] == "X")
+                    {
+                        //block at 8
+                        grid[2, 1] = player;
+                        return;
+                    }
+                    else if (grid[2, 0] == "7" && grid[2, 1] == "X" && grid[2, 2] == "X")
+                    {
+                        //block at 7
+                        grid[2, 0] = player;
+                        return;
+                    }
+                    //Blocking moves vertical
+                    if (grid[0, 0] == "X" && grid[1, 0] == "X" && grid[2, 0] == "7")
+                    {
+                        //block at 7
+                        grid[2, 0] = player;
+                        return;
+                    }
+                    else if (grid[0, 0] == "X" && grid[1, 0] == "4" && grid[2, 0] == "X")
+                    {
+                        //block at 4
+                        grid[1, 0] = player;
+                        return;
+                    }
+                    else if (grid[0, 0] == "1" && grid[1, 0] == "X" && grid[2, 0] == "X")
+                    {
+                        //block at 1
+                        grid[0, 0] = player;
+                        return;
+                    }
+                    else if (grid[0, 1] == "X" && grid[1, 1] == "X" && grid[2, 1] == "8")
+                    {
+                        //block at 8
+                        grid[2, 1] = player;
+                        return;
+                    }
+                    else if (grid[0, 1] == "X" && grid[1, 1] == "5" && grid[2, 1] == "X")
+                    {
+                        //block at 5
+                        grid[1, 1] = player;
+                        return;
+                    }
+                    else if (grid[0, 1] == "2" && grid[1, 1] == "X" && grid[2, 1] == "X")
+                    {
+                        //block at 2
+                        grid[0, 1] = player;
+                        return;
+                    }
+                    else if (grid[0, 2] == "X" && grid[1, 2] == "X" && grid[2, 2] == "9")
+                    {
+                        //block at 9
+                        grid[2, 2] = player;
+                        return;
+                    }
+                    else if (grid[0, 2] == "X" && grid[1, 2] == "6" && grid[2, 2] == "X")
+                    {
+                        //block at 6
+                        grid[1, 2] = player;
+                        return;
+                    }
+                    else if (grid[0, 2] == "3" && grid[1, 2] == "X" && grid[2, 2] == "X")
+                    {
+                        //block at 3
+                        grid[0, 2] = player;
+                        return;
+                    }
+                    else
+                        checkForCounterBlock = false;
+                    #endregion
+                }
+                //Finishing moves
+                else if (finishingMove == true)
+                {
+                    #region finishingMove
+                    //Corner play (Horizontal, Vertical, Diagonal
+                    if (grid[0, 0] == "1")
+                    {
+                        if ((grid[0, 1] == "O" && grid[0, 2] == "O") || (grid[1, 0] == "O" && grid[2, 0] == "O") || (grid[1, 1] == "O" && grid[2, 2] == "O"))
+                        {
+                            //Play top left (1)
+                            grid[0, 0] = player;
+                            return;
+                        }
+                    }
+                    else if (grid[2, 0] == "3")
+                    {
+                        if ((grid[0, 0] == "O" && grid[1, 0] == "O") || (grid[2, 1] == "O" && grid[2, 2] == "O") || (grid[1, 1] == "O" && grid[0, 2] == "O"))
+                        {
+                            //Play top right (3)
+                            grid[2, 0] = player;
+                            return;
+                        }
+                    }
+                    else if (grid[0, 2] == "7")
+                    {
+                        if ((grid[0, 1] == "O" && grid[0, 0] == "O") || (grid[1, 2] == "O" && grid[2, 2] == "O") || (grid[1, 1] == "O" && grid[2, 0] == "O"))
+                        {
+                            //Play bottom left (7)
+                            grid[0, 2] = player;
+                            return;
+                        }
+                    }
+                    else if (grid[2, 2] == "3")
+                    {
+                        if ((grid[0, 2] == "O" && grid[1, 2] == "O") || (grid[2, 1] == "O" && grid[2, 0] == "O") || (grid[1, 1] == "O" && grid[0, 0] == "O"))
+                        {
+                            //Play bottom right (9)
+                            grid[2, 2] = player;
+                            return;
+                        }
+                    }
+                    //Side play (Horizontal, Vertical)
+                    else if (grid[1, 0] == "2")
+                    {
+                        if ((grid[1, 1] == "O" && grid[1, 2] == "O") || (grid[0, 0] == "O" && grid[2, 0] == "O"))
+                        {
+                            //Play top middle (2)
+                            grid[1, 0] = player;
+                            return;
+                        }
+                    }
+                    else if (grid[0, 1] == "4")
+                    {
+                        if ((grid[0, 0] == "O" && grid[0, 2] == "O") || (grid[1, 1] == "O" && grid[2, 1] == "O"))
+                        {
+                            //Play top middle (4)
+                            grid[0, 1] = player;
+                            return;
+                        }
+                    }
+                    else if (grid[2, 1] == "6")
+                    {
+                        if ((grid[2, 0] == "O" && grid[2, 2] == "O") || (grid[0, 1] == "O" && grid[1, 1] == "O"))
+                        {
+                            //Play top middle (6)
+                            grid[2, 1] = player;
+                            return;
+                        }
+                    }
+                    else if (grid[1, 2] == "8")
+                    {
+                        if ((grid[1, 1] == "O" && grid[1, 0] == "O") || (grid[0, 2] == "O" && grid[2, 2] == "O"))
+                        {
+                            //Play top middle (8)
+                            grid[1, 2] = player;
+                            return;
+                        }
+                    }
+                    //Middle play (Horizonal, Vertical, Diagonal from TL, Diagonal from TR)
+                    else if (grid[1, 1] == "5")
+                    {
+                        if ((grid[1, 0] == "O" && grid[1, 2] == "O") || (grid[0, 1] == "O" && grid[2, 1] == "O") || (grid[0, 0] == "O" && grid[2, 2] == "O") || (grid[0, 2] == "O" && grid[2, 0] == "O"))
+                        {
+                            //Play centre (5)
+                            grid[1, 1] = player;
+                            return;
+                        }
+                    }
+                    #endregion
+                }
+                //Mid-play moves
+                else if (midPlay == true)
+                {
+                    #region midPlayMoves
+                    //Orient play on 7 using further play
+                    if (grid[2, 0] == "O" || grid[2, 0] == "7")
+                    {
+                        if (grid[2, 1] == "8" && (grid[2, 2] == "9" || grid[2, 2] == "O"))
+                        {
+                            //play at 8
+                            grid[2, 1] = player;
+                            return;
+                        }
+                        else if (grid[0, 2] == "3" && (grid[1, 1] == "5" || grid[1, 1] == "O"))
+                        {
+                            //play at 3
+                            grid[0, 2] = player;
+                            return;
+                        }
+                        else if (grid[0, 0] == "1" && (grid[1, 0] == "4" || grid[1, 0] == "O"))
+                        {
+                            //play at 1
+                            grid[0, 0] = player;
+                            return;
+                        }
+                    }
+                    //Orient play on 3 using further play
+                    else if (grid[0, 2] == "O" || grid[0, 2] == "3")
+                    {
+                        if (grid[0, 0] == "1" && (grid[0, 1] == "2" || grid[0, 1] == "O"))
+                        {
+                            //play at 1
+                            grid[0, 0] = player;
+                            return;
+                        }
+                        else if (grid[2, 0] == "7" && (grid[1, 1] == "5" || grid[1, 1] == "O"))
+                        {
+                            //play at 7
+                            grid[2, 0] = player;
+                            return;
+                        }
+                        else if (grid[2, 2] == "9" && (grid[1, 2] == "6" || grid[1, 2] == "O"))
+                        {
+                            //play at 9
+                            grid[2, 2] = player;
+                            return;
+                        }
+                    }
+                    //Orient play on 9 using further play
+                    else if (grid[2, 2] == "O" || grid[2, 0] == "9")
+                    {
+                        if (grid[2, 0] == "7" && (grid[2, 1] == "8" || grid[2, 1] == "O"))
+                        {
+                            //play at 7
+                            grid[2, 0] = player;
+                            return;
+                        }
+                        else if (grid[0, 0] == "1" && (grid[1, 1] == "5" || grid[1, 1] == "O"))
+                        {
+                            //play at 1
+                            grid[0, 0] = player;
+                            return;
+                        }
+                        else if (grid[0, 2] == "3" && (grid[1, 2] == "6" || grid[1, 2] == "O"))
+                        {
+                            //play at 3
+                            grid[0, 0] = player;
+                            return;
+                        }
+                    }
+                    //Orient play on 1 using further play
+                    else if (grid[0, 0] == "O" || grid[0, 0] == "1")
+                    {
+                        if (grid[0, 2] == "3" && (grid[0, 1] == "2" || grid[0, 1] == "O"))
+                        {
+                            //play at 3
+                            grid[0, 2] = player;
+                            return;
+                        }
+                        else if (grid[2, 2] == "9" && (grid[1, 1] == "5" || grid[1, 1] == "O"))
+                        {
+                            //play at 9
+                            grid[2, 2] = player;
+                            return;
+                        }
+                        else if (grid[2, 0] == "7" && (grid[1, 0] == "4" || grid[1, 0] == "O"))
+                        {
+                            //play at 7
+                            grid[2, 0] = player;
+                            return;
+                        }
+                    }
+                    //Orient play on 1 using close play
+                    else if (grid[0, 0] == "O" || grid[0, 0] == "1")
+                    {
+                        if (grid[0, 1] == "2" && (grid[0, 2] == "3" || grid[0, 2] == "O"))
+                        {
+                            //play at 2
+                            grid[0, 1] = player;
+                            return;
+                        }
+                        else if (grid[1, 1] == "5" && (grid[2, 2] == "9" || grid[2, 2] == "O"))
+                        {
+                            //play at 5
+                            grid[1, 1] = player;
+                            return;
+                        }
+                        else if (grid[1, 0] == "4" && (grid[2, 0] == "7" || grid[2, 0] == "O"))
+                        {
+                            //play at 4
+                            grid[1, 0] = player;
+                            return;
+                        }
+                    }
+                    //Orient play on 9 using close play
+                    else if (grid[2, 2] == "O")
+                    {
+                        if (grid[2, 1] == "8" && (grid[2, 0] == "7" || grid[2, 0] == "O"))
+                        {
+                            //play at 8
+                            grid[2, 1] = player;
+                            return;
+                        }
+                        else if (grid[1, 1] == "5" && (grid[0, 0] == "1" || grid[0, 0] == "O"))
+                        {
+                            //play at 5
+                            grid[1, 1] = player;
+                            return;
+                        }
+                        else if (grid[1, 2] == "6" && (grid[0, 2] == "3" || grid[0, 2] == "O"))
+                        {
+                            //play at 6
+                            grid[1, 2] = player;
+                            return;
+                        }
+                    }
+                    //Orient play on 3 using close play
+                    else if (grid[0, 0] == "O" || grid[0, 0] == "1")
+                    {
+                        if (grid[0, 1] == "2" && (grid[0, 0] == "1" || grid[0, 0] == "O"))
+                        {
+                            //play at 2
+                            grid[0, 1] = player;
+                            return;
+                        }
+                        else if (grid[1, 1] == "5" && (grid[2, 0] == "7" || grid[2, 0] == "O"))
+                        {
+                            //play at 5
+                            grid[1, 1] = player;
+                            return;
+                        }
+                        else if (grid[1, 2] == "6" && (grid[2, 2] == "9" || grid[2, 2] == "O"))
+                        {
+                            //play at 6
+                            grid[1, 2] = player;
+                            return;
+                        }
+                    }
+                    //Orient play on 7 using close play
+                    else if (grid[0, 0] == "O" || grid[0, 0] == "7")
+                    {
+                        if (grid[1, 0] == "4" && (grid[0, 0] == "1" || grid[0, 0] == "O"))
+                        {
+                            //play at 4
+                            grid[1, 0] = player;
+                            return;
+                        }
+                        else if (grid[1, 1] == "5" && (grid[0, 2] == "3" || grid[0, 2] == "O"))
+                        {
+                            //play at 5
+                            grid[1, 1] = player;
+                            return;
+                        }
+                        else if (grid[2, 1] == "8" && (grid[2, 2] == "9" || grid[2, 2] == "O"))
+                        {
+                            //play at 8
+                            grid[2, 1] = player;
+                            return;
+                        }
+                    }
+                    #endregion
+                }
+                //start in a corner, random corner
+                else if (moveCount <= 3)
+                {
+                    #region cornerPlayStart
+                    Random oRandom = new Random();
+                    string move;
+                    move = Convert.ToString(oRandom.Next(1, 6));
+                    if ((grid[0, 0] == "1") && (move == "1"))
+                    {
+                        grid[0, 0] = player;
+                        return;
+                    }
+                    else if ((grid[0, 2] == "3") && (move == "2"))
+                    {
+                        grid[0, 2] = player;
+                        return;
+                    }
+                    else if ((grid[1, 1] == "5") && (move == "3"))
+                    {
+                        grid[1, 1] = player;
+                        return;
+                    }
+                    else if ((grid[2, 0] == "7") && (move == "4"))
+                    {
+                        grid[2, 0] = player;
+                        return;
+                    }
+                    else if ((grid[2, 2] == "9") && (move == "5"))
+                    {
+                        grid[2, 2] = player;
+                        return;
+                    }
+                    #endregion
+                }
+                else
+                {
+                    #region randomise
+                    string move = Convert.ToString(random.Next(1, 10));
+                    for (int i = 0; i < 3; i++)
+                        for (int j = 0; j < 3; j++)
+                        {
+                            if (move == grid[i, j])
+                            {
+                                grid[i, j] = player;
+                                return;
+                            }
+                        }
+                    #endregion
+                }
+            }
+        }
