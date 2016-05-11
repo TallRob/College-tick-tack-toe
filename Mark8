@@ -1,0 +1,259 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace tic_tac_toe
+{
+    class Program
+    {
+        static string fileName = AppDomain.CurrentDomain.BaseDirectory + "scores.txt";
+        static string[,] grid = new string[3, 3];
+        static Random random = new Random();
+        static void Main(string[] args)
+        {
+            int[] gameData = new int[3];
+            string[] fileData = new string[3];
+            if (System.IO.File.Exists(fileName))
+            {
+                fileData = System.IO.File.ReadAllLines(fileName);
+                for (int i = 0; i < 3; i++)
+                    gameData[i] = Convert.ToInt32(fileData[i]);
+            }
+            else
+            {
+                gameData[0] = 0;
+                gameData[1] = 0;
+                gameData[2] = 0;
+            }
+            int xWins = 0;
+            int oWins = 0;
+            int moveCount = 0;
+            string winner = "";
+            bool Playing = true;
+            int mode = 0;
+            while (Playing == true)
+            {
+                resetBoard(winner, moveCount, xWins, oWins);
+                Console.Clear();
+                //Welcome player and show options.
+                Console.WriteLine("How would you like to play tic-tac-toe? \n 1. Player vs Player \n 2. Player vs Computer (Easy) \n 3. Help Screen\n 4. Exit game.");
+                string choice = Console.ReadLine();
+                switch (choice)
+                {
+                    case "1":
+                    case "1.":
+                        //Put in player vs player mode
+                        mode = 0;
+                        theGame(gameData, fileData, winner, moveCount, mode, xWins, oWins);
+                        break;
+                    case "2":
+                    case "2.":
+                        //Put in player vs computer mode
+                        mode = 1;
+                        theGame(gameData, fileData, winner, moveCount, mode, xWins, oWins);
+                        break;
+                    case "3":
+                    case "3.":
+                        Help();
+                        break;
+                    case "4":
+                    case "4.":
+                        Playing = false;
+                        break;
+                    default:
+                        Console.Clear();
+                        Console.WriteLine("That is an invalid option. Press Enter to continue.");
+                        Console.ReadLine();
+                        break;
+                }
+            }
+            End(gameData, fileData);
+        }
+        static void theGame(int[] gameData, string[] fileData, string winner, int moveCount, int mode, int xWins, int oWins)
+        {
+            string player = "X";
+            while (xWins < 5 && oWins < 5)
+            {
+                while (winner == "")
+                {
+                    drawBoard();
+                    if (player == "X")
+                    {
+                        playerMove(player);
+                        player = "O";
+                    }
+                    else
+                    {
+                        if (mode == 0)
+                        {
+                            playerMove(player);
+                            player = "X";
+                        }
+                        else if (mode == 1)
+                        {
+                            computerMoveEasy(player);
+                            player = "X";
+                        }
+                    }
+                    moveCount++;
+                    winner = checkWin(moveCount);
+                }
+                if (player == "X")
+                {
+                    oWins = oWins + 1;
+                    gameData[1]++;
+                }
+                else if (player == "O")
+                {
+                    xWins = xWins + 1;
+                    gameData[0]++;
+                }
+                else if (player == "T")
+                    gameData[2]++;
+                winner = "";
+                if (xWins < 5 && oWins < 5)
+                {
+                    Console.WriteLine("\nX wins = " + xWins + "\nO wins = " + oWins + "\n\nPress Enter to proceed to the next battle.");
+                    Console.ReadLine();
+                }
+                else
+                {
+                    Console.WriteLine("\nX wins = " + xWins + "\nO wins = " + oWins);
+                }
+                moveCount = 0;
+                resetBoard(winner, moveCount, xWins, oWins);
+            }
+            if (xWins == 5)
+            {
+                Console.WriteLine("\nO has been defeated. X is the winner\nGame Over!");
+            }
+            else
+            {
+                Console.WriteLine("\nX has been defeated. O is the winner\nGame Over!");
+            }
+            Console.ReadLine();
+        }
+        static string checkWin(int moveCount)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if ((grid[i, 0] == grid[i, 1]) && (grid[i, 0] == grid[i, 2]))
+                {
+                    drawBoard();
+                    Console.WriteLine("\n" + grid[i, 0] + " wins this battle!");
+                    return grid[i, 0];
+                }
+                if ((grid[0, i] == grid[1, i]) && (grid[0, i] == grid[2, i]))
+                {
+                    drawBoard();
+                    Console.WriteLine("\n" + grid[0, i] + " wins this battle!");
+                    return grid[0, i];
+                }
+            }
+            if (((grid[0, 0] == grid[1, 1]) && (grid[2, 2] == grid[0, 0])) || ((grid[0, 2] == grid[1, 1]) && (grid[0, 2] == grid[2, 0])))
+            {
+                drawBoard();
+                Console.WriteLine("\n" + grid[1, 1] + " wins this battle!");
+                return grid[1, 1];
+            }
+            if (moveCount == 8)
+            {
+                drawBoard();
+                Console.WriteLine("Game is a tie");
+                return "T";
+            }
+            return "";
+        }
+        static void computerMoveEasy(string player)
+        {
+            string move;
+            while (true)
+            {
+                move = Convert.ToString(random.Next(1, 10));
+                for (int i = 0; i < 3; i++)
+                    for (int j = 0; j < 3; j++)
+                    {
+                        if (move == grid[i, j])
+                        {
+                            grid[i, j] = player;
+                            return;
+                        }
+                    }
+            }
+        }
+        static void playerMove(string player)
+        {
+            string move = "";
+            while (true)
+            {
+                Console.WriteLine("Choose a number:");
+                move = Console.ReadLine();
+                for (int i = 0; i < 3; i++)
+                    for (int j = 0; j < 3; j++)
+                    {
+                        if (move == grid[i, j])
+                        {
+                            grid[i, j] = player;
+                            return;
+                        }
+                    }
+            }
+        }
+        static void resetBoard(string winner, int moveCount, int oWins, int xWins)
+        {
+            oWins = 0;
+            xWins = 0;
+            moveCount = 0;
+            winner = "";
+
+            int count = 1;
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
+                {
+                    grid[i, j] = Convert.ToString(count);
+                    count++;
+                }
+        }
+        static void End(int[] gameData, string[] fileData)
+        {
+            Console.ReadLine();
+            for (int i = 0; i < 3; i++)
+                fileData[i] = Convert.ToString(gameData[i]);
+            System.IO.File.WriteAllLines(fileName, fileData);
+        }
+        static void drawBoard()
+        {
+            Console.Clear();
+            Console.WriteLine("Win 5 battles to win the war.\n");
+            //row is i, collumn is j
+            //top row
+            Console.WriteLine("╔═══╦═══╦═══╗");
+            //declare row with integer value 0, 
+            for (int i = 0; i < 3; i++) 
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    Console.Write("║ " + grid[i, j] + " ");
+                    if (j == 2) Console.WriteLine("║");
+                }
+                if (i < 2) Console.WriteLine("╠═══╬═══╬═══╣");
+            }
+            Console.WriteLine("╚═══╩═══╩═══╝");
+            //Console.WriteLine(grid[0, 0] + grid[0, 1] + grid[0, 2] + grid[1, 0] + grid[1, 1] + grid[1, 2] + grid[2, 0] + grid[2, 1] + grid[2, 2]);
+        }
+        static void Help()
+        {
+            Console.Clear();
+            Console.WriteLine("\nThis is a game of Tick-Tack-Toe. You're playing against an intelligent\ncomputer designed to frustrate you.\n\nThe aim of the game is to get three of your counter in a row. Simple!\nEach player takes their turn one at a time until a player wins (left) or there\nis no available moves left (right) .\n\n          ╔═══╦═══╦═══╗          ╔═══╦═══╦═══╗\n          ║ X ║   ║   ║          ║ O ║ X ║ X ║\n          ╠═══╬═══╬═══╣          ╠═══╬═══╬═══╣\n          ║   ║ X ║   ║          ║ X ║ X ║ O ║\n          ╠═══╬═══╬═══╣          ╠═══╬═══╬═══╣\n          ║   ║   ║ X ║          ║ O ║ O ║ X ║\n          ╚═══╩═══╩═══╝          ╚═══╩═══╩═══╝\n\nIf a player attemps to occupy a space on thr board that is already occupied\nby an X or O counter, they will have to try a different spot.\n\n\n\n\nPress Enter to continue to the next page.\nPg 1/3");
+            Console.ReadKey();
+            Console.Clear();
+            Console.WriteLine("To save your scores, return to the main menu and select the quit option. The\nsave will be stored in the installation directory as scores.txt. The wins,\nlosses and draws can be seen here. By deleting the file while the game is \nclosed, the scores will be reset next time you launch the game.\n\nThe save file will look something like this\n------------------------------\n\nWins = 0\nLosses = 0\nDraws = 0\n\n------------------------------\nThe save file can be found at: " + fileName + "\n\n\n\n\n\n\n\nPg 2/3");
+            Console.ReadKey();
+            Console.Clear();
+            Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPg 3/3");
+            Console.ReadKey();
+            Console.Clear();
+        }
+    }
+}
