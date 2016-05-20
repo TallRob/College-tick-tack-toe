@@ -39,7 +39,7 @@ namespace tic_tac_toe
             //start playing loop which will terminate at option 4
             while (playing == true)
             {
-                resetBoard(winner, moveCount, xWins, oWins, ties);
+                ResetBoard(winner, moveCount, xWins, oWins, ties);
                 Console.Clear();
                 //Welcome player and show options
                 Console.WriteLine("Welcome to tic-tac-toe. \n 1. Player vs Player \n 2. Player vs Computer (Easy) \n 3. Help Screen\n 4. Exit game.");
@@ -50,13 +50,13 @@ namespace tic_tac_toe
                     case "1.":
                         //Put in player vs player mode and launch game
                         mode = 0;
-                        theGame(gameData, fileData, winner, moveCount, mode, xWins, oWins, ties);
+                        TheGame(gameData, fileData, winner, moveCount, mode, xWins, oWins, ties);
                         break;
                     case "2":
                     case "2.":
                         //Put in player vs computer mode and launch game
                         mode = 1;
-                        theGame(gameData, fileData, winner, moveCount, mode, xWins, oWins, ties);
+                        TheGame(gameData, fileData, winner, moveCount, mode, xWins, oWins, ties);
                         break;
                     case "3":
                     case "3.":
@@ -76,10 +76,11 @@ namespace tic_tac_toe
                         break;
                 }
             }
-            //if option 4 is chosen, save the game data to the save file and close.
-            End(gameData, fileData);
+            //if option 4 is chosen, save the game data to the save file and close
+            //this shouldn't be needed as the game saves at the end of each game
+            Save(gameData, fileData);
         }
-        static void theGame(int[] gameData, string[] fileData, string winner, int moveCount, int mode, int xWins, int oWins, int ties)
+        static void TheGame(int[] gameData, string[] fileData, string winner, int moveCount, int mode, int xWins, int oWins, int ties)
         {
             //set the first player to play
             string player = "X";
@@ -89,25 +90,25 @@ namespace tic_tac_toe
                 //while no one has won
                 while (winner == "")
                 {
-                    drawBoard();
+                    DrawBoard();
                     //if the current player is X, let them have their turn, then change the current player to O
                     if (player == "X")
                     {
-                        playerMove(player);
+                        PlayerMove(player);
                         player = "O";
                     }
                     //otherwise check to see if the gamemode is player verses player or computer, let them have their go then change the player to O
                     else
                     {
                         if (mode == 0)
-                            playerMove(player);
+                            PlayerMove(player);
                         else if (mode == 1)
-                            computerMoveEasy(player);
+                            ComputerMoveEasy(player);
                         player = "X";
                     }
                     //add 1 to the move count so that draws can occur and won't break the game, then check to see if anyone has one yet
                     moveCount++;
-                    winner = checkWin(moveCount);
+                    winner = CheckWin(moveCount);
                 }
                 //once winner has a value
                 //check if player X has won
@@ -145,7 +146,7 @@ namespace tic_tac_toe
                 else
                     //otherwise display scores without message
                     Console.WriteLine("\nX wins = " + xWins + "\nO wins = " + oWins + "\nTies = " + ties);
-                resetBoard(winner, moveCount, xWins, oWins, ties);
+                ResetBoard(winner, moveCount, xWins, oWins, ties);
             }
             //if x has reached 5 wins, show x has won
             if (xWins == 5)
@@ -154,17 +155,18 @@ namespace tic_tac_toe
                 //otherwise show O wins
                 Console.WriteLine("\nX has been defeated. O is the winner\nGame Over!");
             //save scores to file
-            End(gameData, fileData);
+            Save(gameData, fileData);
             Console.ReadLine();
         }
-        static string checkWin(int moveCount)
+        static string CheckWin(int moveCount)
         {
+            //each time hit, increase i by 1 until it reaches 3
             for (int i = 0; i < 3; i++)
             {
                 //check for horisontal win
                 if ((grid[i, 0] == grid[i, 1]) && (grid[i, 0] == grid[i, 2]))
                 {
-                    drawBoard();
+                    DrawBoard();
                     Console.WriteLine("\n" + grid[i, 0] + " wins this battle!");
                     //return grid array winner
                     return grid[i, 0];
@@ -172,7 +174,7 @@ namespace tic_tac_toe
                 //check for vertical win
                 if ((grid[0, i] == grid[1, i]) && (grid[0, i] == grid[2, i]))
                 {
-                    drawBoard();
+                    DrawBoard();
                     Console.WriteLine("\n" + grid[0, i] + " wins this battle!");
                     //return grid array winner
                     return grid[0, i];
@@ -181,7 +183,7 @@ namespace tic_tac_toe
             //check for diagonal win
             if (((grid[0, 0] == grid[1, 1]) && (grid[2, 2] == grid[0, 0])) || ((grid[0, 2] == grid[1, 1]) && (grid[0, 2] == grid[2, 0])))
             {
-                drawBoard();
+                DrawBoard();
                 Console.WriteLine("\n" + grid[1, 1] + " wins this battle!");
                 //return grid array winner
                 return grid[1, 1];
@@ -189,7 +191,7 @@ namespace tic_tac_toe
             //check to see if all possible moved are played
             if (moveCount == 9)
             {
-                drawBoard();
+                DrawBoard();
                 Console.WriteLine("Game is a tie");
                 //return tie (no winner)
                 return "T";
@@ -197,7 +199,7 @@ namespace tic_tac_toe
             //otherwise return nothing so game continues
             return "";
         }
-        static void computerMoveEasy(string player)
+        static void ComputerMoveEasy(string player)
         {
             //create local variable to temporarily store move
             string move;
@@ -216,7 +218,7 @@ namespace tic_tac_toe
                         }
             }
         }
-        static void playerMove(string player)
+        static void PlayerMove(string player)
         {
             //create local variable to temporarily store move
             string move = "";
@@ -236,7 +238,7 @@ namespace tic_tac_toe
                         }
             }
         }
-        static void resetBoard(string winner, int moveCount, int oWins, int xWins, int ties)
+        static void ResetBoard(string winner, int moveCount, int oWins, int xWins, int ties)
         {
             //reset scores
             oWins = 0;
@@ -253,14 +255,14 @@ namespace tic_tac_toe
                     count++;
                 }
         }
-        static void End(int[] gameData, string[] fileData)
+        static void Save(int[] gameData, string[] fileData)
         {
             //add file scores and game scores together
             for (int i = 0; i < 3; i++)
                 fileData[i] = Convert.ToString(gameData[i]);
             System.IO.File.WriteAllLines(fileName, fileData);
         }
-        static void drawBoard()
+        static void DrawBoard()
         {
             //print board onscreen
             Console.Clear();
@@ -290,7 +292,7 @@ namespace tic_tac_toe
             Console.WriteLine("\nThis is a game of Tick-Tack-Toe. You're playing against an intelligent\ncomputer designed to frustrate you.\n\nThe aim of the game is to get three of your counter in a row. Simple!\nEach player takes their turn one at a time until a player wins (left) or there\nis no available moves left (right) .\n\n          ╔═══╦═══╦═══╗          ╔═══╦═══╦═══╗\n          ║ X ║   ║   ║          ║ O ║ X ║ X ║\n          ╠═══╬═══╬═══╣          ╠═══╬═══╬═══╣\n          ║   ║ X ║   ║          ║ X ║ X ║ O ║\n          ╠═══╬═══╬═══╣          ╠═══╬═══╬═══╣\n          ║   ║   ║ X ║          ║ O ║ O ║ X ║\n          ╚═══╩═══╩═══╝          ╚═══╩═══╩═══╝\n\nIf a player attemps to occupy a space on the board that is already occupied\nby an X or O counter, they will have to try a different spot.\n\n\n\n\nPress Enter to continue to the next page.\nPg 1/2");
             Console.ReadKey();
             Console.Clear();
-            Console.WriteLine("The scores are saved at the end of each game. The save is stored in the\ninstallation directory as scores.txt. The file will show the wins, losses and draws. You can reset the scores by deleting or modifying the file while the game is closed, the scores will be reset next time you launch the game.\n\nThe save file will look something like this\n------------------------------\n\n" + fileData[0] + "\n" + fileData [1] + "\n" + fileData[2] + "\n\n------------------------------\nThe save file can be found at: " + fileName + "\n\n\n\n\n\n\n\n\nPg 2/2");
+            Console.WriteLine("The scores are saved at the end of each game. The save is stored in the\ninstallation directory as scores.txt. The file will show the wins, losses and\ndraws. You can reset the scores by deleting or modifying the file while the\ngame is closed, the scores will be reset next time you launch the game.\n\nThe save file will look something like this:\n\n------------------------------File------------------------------\n" + fileData[0] + "\n" + fileData [1] + "\n" + fileData[2] + "\n----------------------------End File----------------------------\n\nAnd can be found at: " + fileName + "\n\n\n\n\n\n\n\nPress any key to return to the main menu.\nPg 2/2");
             Console.ReadKey();
             Console.Clear();
         }
