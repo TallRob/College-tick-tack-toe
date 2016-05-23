@@ -39,6 +39,9 @@ namespace tic_tac_toe
             //start playing loop which will terminate at option 4
             while (playing == true)
             {
+
+                //The game saves everytime the player returns to the menu
+                Save(gameData, fileData);
                 ResetBoard(winner, moveCount, xWins, oWins, ties);
                 Console.Clear();
                 //Welcome player and show options
@@ -50,13 +53,13 @@ namespace tic_tac_toe
                     case "1.":
                         //Put in player vs player mode and launch game
                         mode = 0;
-                        TheGame(gameData, fileData, winner, moveCount, mode, xWins, oWins, ties);
+                        TheGame(gameData, winner, moveCount, mode, xWins, oWins, ties);
                         break;
                     case "2":
                     case "2.":
                         //Put in player vs computer mode and launch game
                         mode = 1;
-                        TheGame(gameData, fileData, winner, moveCount, mode, xWins, oWins, ties);
+                        TheGame(gameData, winner, moveCount, mode, xWins, oWins, ties);
                         break;
                     case "3":
                     case "3.":
@@ -76,11 +79,8 @@ namespace tic_tac_toe
                         break;
                 }
             }
-            //if option 4 is chosen, save the game data to the save file and close
-            //this shouldn't be needed as the game saves at the end of each game
-            Save(gameData, fileData);
         }
-        static void TheGame(int[] gameData, string[] fileData, string winner, int moveCount, int mode, int xWins, int oWins, int ties)
+        static void TheGame(int[] gameData, string winner, int moveCount, int mode, int xWins, int oWins, int ties)
         {
             //set the first player to play
             string player = "X";
@@ -154,8 +154,6 @@ namespace tic_tac_toe
             else
                 //otherwise show O wins
                 Console.WriteLine("\nX has been defeated. O is the winner\nGame Over!");
-            //save scores to file
-            Save(gameData, fileData);
             Console.ReadLine();
         }
         static string CheckWin(int moveCount)
