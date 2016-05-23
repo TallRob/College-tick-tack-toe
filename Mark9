@@ -224,7 +224,7 @@ namespace tic_tac_toe
             string move = "";
             while (true)
             {
-                Console.WriteLine("Choose a number:");
+                Console.WriteLine("Choose a number " + player);
                 //get the move
                 move = Console.ReadLine();
                 for (int i = 0; i < 3; i++)
@@ -292,7 +292,7 @@ namespace tic_tac_toe
             Console.WriteLine("\nThis is a game of Tick-Tack-Toe. You're playing against an intelligent\ncomputer designed to frustrate you.\n\nThe aim of the game is to get three of your counter in a row. Simple!\nEach player takes their turn one at a time until a player wins (left) or there\nis no available moves left (right) .\n\n          ╔═══╦═══╦═══╗          ╔═══╦═══╦═══╗\n          ║ X ║   ║   ║          ║ O ║ X ║ X ║\n          ╠═══╬═══╬═══╣          ╠═══╬═══╬═══╣\n          ║   ║ X ║   ║          ║ X ║ X ║ O ║\n          ╠═══╬═══╬═══╣          ╠═══╬═══╬═══╣\n          ║   ║   ║ X ║          ║ O ║ O ║ X ║\n          ╚═══╩═══╩═══╝          ╚═══╩═══╩═══╝\n\nIf a player attemps to occupy a space on the board that is already occupied\nby an X or O counter, they will have to try a different spot.\n\n\n\n\nPress Enter to continue to the next page.\nPg 1/2");
             Console.ReadKey();
             Console.Clear();
-            Console.WriteLine("The scores are saved at the end of each game. The save is stored in the\ninstallation directory as scores.txt. The file will show the wins, losses and\ndraws. You can reset the scores by deleting or modifying the file while the\ngame is closed, the scores will be reset next time you launch the game.\n\nThe save file will look something like this:\n\n------------------------------File------------------------------\n" + fileData[0] + "\n" + fileData [1] + "\n" + fileData[2] + "\n----------------------------End File----------------------------\n\nAnd can be found at: " + fileName + "\n\n\n\n\n\n\n\nPress any key to return to the main menu.\nPg 2/2");
+            Console.WriteLine("The scores are saved at the end of each game. The save is stored in the\ninstallation directory as scores.txt. The file will show the wins, losses and\ndraws. You can reset the scores by deleting or modifying the file while the\ngame is closed, the scores will be reset next time you launch the game.\n\nThe save file will look something like this:\n\n------------------------------File------------------------------\n" + fileData[0] + "\n" + fileData[1] + "\n" + fileData[2] + "\n----------------------------End File----------------------------\n\nAnd can be found at: " + fileName + "\n\n\n\n\n\n\n\nPress any key to return to the main menu.\nPg 2/2");
             Console.ReadKey();
             Console.Clear();
         }
